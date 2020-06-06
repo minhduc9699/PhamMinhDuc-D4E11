@@ -19,4 +19,12 @@ cursor.execute('''
     name VARCHAR(255) PRIMARY KEY
   )
 ''')
+
+cursor.execute('''
+  CREATE TABLE IF NOT EXISTS movie.movie_actor(
+    movie_id VARCHAR(255),
+    actor_name VARCHAR(255),
+    PRIMARY KEY(movie_id, actor_name)
+  )
+''')
 client.commit()
