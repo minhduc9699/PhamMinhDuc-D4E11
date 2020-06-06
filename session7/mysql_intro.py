@@ -12,21 +12,21 @@ cursor = client.cursor()
 
 # cursor.execute('CREATE DATABASE d4e11')
 
-cursor.execute('''
-  CREATE TABLE d4e11.centre(
-    id VARCHAR(255) UNIQUE PRIMARY KEY,
-    name VARCHAR(255) UNIQUE
-  )
-''')
+# cursor.execute('''
+  # CREATE TABLE d4e11.centre(
+    # id VARCHAR(255) UNIQUE PRIMARY KEY,
+    # name VARCHAR(255) UNIQUE
+  # )
+# ''')
 
-cursor.execute('''
-  CREATE TABLE d4e11.salesman(
-    username VARCHAR(255) PRIMARY KEY,
-    centre_id VARCHAR(255) REFERENCES d4e11.centre(id),
-    email VARCHAR(255),
-    name VARCHAR(255)
-  )
-''')
+# cursor.execute('''
+  # CREATE TABLE d4e11.salesman(
+    # username VARCHAR(255) PRIMARY KEY,
+    # centre_id VARCHAR(255) REFERENCES d4e11.centre(id),
+    # email VARCHAR(255),
+    # name VARCHAR(255)
+  # )
+# ''')
 
 # cursor.execute('''
 #   CREATE TABLE d4e11.user (
@@ -41,15 +41,12 @@ cursor.execute('''
 #   VALUES ('1', 'Sao Hỏa'), ('2', 'Sao Kim');
 # ''')
 
-centre_name = 'Sao Hỏa'
+centre_name = '''Sao's Hỏa'''
 
-cursor.execute(f''' SELECT * FROM d4e11.centre WHERE name = '{centre_name}' ''')
-centre_found = cursor.fetchone()
-print(centre_found)
 cursor.execute(
   f'''
   INSERT INTO d4e11.salesman(username, centre_id, email, name)
-  VALUES ('best salesman', '{centre_found['id']}', 'email@gamil.com', 'người bán hàng');
+  VALUES ("{centre_name}", '1', 'email@email', 'name');
   '''
 )
 
