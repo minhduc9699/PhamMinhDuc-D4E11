@@ -1,11 +1,20 @@
 import pymysql
-client = pymysql.connect(
+from pymongo import MongoClient
+
+mongo_client = MongoClient()
+mongo_db = mongo_client.get_database('d4e12')
+movie_collection = mongo_db.get_collection('movies')
+
+for movie in movie_collection.find({}):
+  print(movie)
+
+mysql_client = pymysql.connect(
   host='localhost',
   user='root',
   password='@gmail.com',
   cursorclass=pymysql.cursors.DictCursor
 )
-cursor = client.cursor()
+cursor = mysql_client.cursor()
 cursor.execute('''
   CREATE TABLE IF NOT EXISTS movie.movie(
     id VARCHAR(255) PRIMARY KEY,
@@ -27,4 +36,4 @@ cursor.execute('''
     PRIMARY KEY(movie_id, actor_name)
   )
 ''')
-client.commit()
+mysql_client.commit()
