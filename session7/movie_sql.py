@@ -5,8 +5,6 @@ mongo_client = MongoClient()
 mongo_db = mongo_client.get_database('d4e12')
 movie_collection = mongo_db.get_collection('movies')
 
-for movie in movie_collection.find({}):
-  print(movie)
 
 mysql_client = pymysql.connect(
   host='localhost',
@@ -36,4 +34,25 @@ cursor.execute('''
     PRIMARY KEY(movie_id, actor_name)
   )
 ''')
+
+query = {
+  'title': {'$ne': None},
+  'writer': {'$ne': None},
+  'year': {'$ne': None},
+  'actors': {'$ne': None}
+}
+for movie in movie_collection.find(query): # EXTRACT
+  # TRANSFORM
+  movie_id = str(movie['_id'])
+  movie_title = movie['title']
+  movie_writer = movie['writer']
+  movie_year = movie['year']
+  # LOAD
+  cursor.execute(f'''
+    INSERT INTO movie.movie(id, title, writer, year)
+    VALUES ('{movie_id}', '{movie_title}', '{movie_writer}', '{movie_year}')
+  ''')
+
+
+
 mysql_client.commit()
