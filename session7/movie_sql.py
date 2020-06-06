@@ -52,26 +52,34 @@ query = {
 #     INSERT INTO movie.movie(id, title, writer, year)
 #     VALUES ('{movie_id}', '{movie_title}', '{movie_writer}', '{movie_year}')
 #   ''')
-query = [
- {
-    '$match': {
-        'actors': {'$ne': None}
-    }
-  },
-  {
-      '$unwind': '$actors'
-  },
-  {
-    '$group': {
-      '_id': '$actors', 
-    }
-  }
-]
-for actor in movie_collection.aggregate(query):
-  print(actor['_id'])
-  cursor.execute(f'''
-    INSERT INTO movie.actor(name)
-    VALUES('{actor['_id']}')
-  ''')
+# query = [
+#  {
+#     '$match': {
+#         'actors': {'$ne': None}
+#     }
+#   },
+#   {
+#       '$unwind': '$actors'
+#   },
+#   {
+#     '$group': {
+#       '_id': '$actors', 
+#     }
+#   }
+# ]
+# for actor in movie_collection.aggregate(query):
+#   print(actor['_id'])
+#   cursor.execute(f'''
+#     INSERT INTO movie.actor(name)
+#     VALUES('{actor['_id']}')
+#   ''')
+
+for movie in movie_collection.find(query):
+  for actor in movie['actors']:
+    print(movie['_id'], actor)
+    cursor.execute(f'''
+      INSERT INTO movie.movie_actor(movie_id, actor_name)
+      VALUES('{str(movie['_id'])}', '{actor}')
+    ''')
 
 mysql_client.commit()
